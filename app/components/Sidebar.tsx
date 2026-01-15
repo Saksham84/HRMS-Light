@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Calendar, Menu } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  Calendar,
+  Menu,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import clsx from "clsx";
 import Image from "next/image";
@@ -26,6 +32,12 @@ const menuItems = [
     icon: Users,
   },
   {
+    id: "departments",
+    label: "Departments",
+    href: "/departments",
+    icon: Building2,
+  },
+  {
     id: "attendance",
     label: "Attendance",
     href: "/attendance",
@@ -42,6 +54,8 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         return "Dashboard";
       case "/employees":
         return "Employees";
+      case "/departments":
+        return "Departments";
       case "/attendance":
         return "Attendance";
       default:
@@ -51,7 +65,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile Menu Button / Header */}
+      {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-border z-50 flex items-center px-4">
         <Button variant="ghost" size="icon" onClick={onToggle}>
           <Menu className="h-5 w-5" />
@@ -61,7 +75,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         </h1>
       </div>
 
-      {/* Overlay for mobile */}
+      {/* Overlay */}
       {isOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black/50 z-40"

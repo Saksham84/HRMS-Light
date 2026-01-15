@@ -12,19 +12,6 @@ export interface AttendanceRecord {
   date: string;
   status: 'present' | 'absent';
 }
-
-// export const DEPARTMENTS = [
-//   'Engineering',
-//   'Human Resources',
-//   'Marketing',
-//   'Sales',
-//   'Finance',
-//   'Operations',
-//   'Customer Support',
-//   'Product',
-//   'Design',
-// ] as const;
-
 export interface Department {
   id: string;
   name: string;

@@ -197,37 +197,15 @@ export default function EmployeesPage() {
             )}
 
             {/* Employee Table */}
-            <Card>
-                <CardContent className="p-0">
-                    {employees.length === 0 ? (
-                        <div className="text-center py-12 px-4">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-                                <Users className="h-8 w-8 text-muted-foreground" />
-                            </div>
-                            <h3 className="text-lg font-medium text-foreground mb-2">
-                                No employees yet
-                            </h3>
-                            <p className="text-sm text-muted-foreground mb-4">
-                                Get started by adding your first employee
-                            </p>
-                            <Button onClick={() => setIsAddModalOpen(true)}>
-                                <Plus className="h-4 w-4 mr-2" />
-                                Add Employee
-                            </Button>
-                        </div>
-                    ) : filteredEmployees.length === 0 ? (
-                        <div className="text-center py-12 px-4">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-                                <Search className="h-8 w-8 text-muted-foreground" />
-                            </div>
-                            <h3 className="text-lg font-medium text-foreground mb-2">
-                                No results found
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                                Try adjusting your search query
-                            </p>
-                        </div>
-                    ) : (
+            {loading ? (
+                <TableSkeleton columns={5} rows={6} />
+            ) : employees.length === 0 ? (
+                <CardSkeleton />
+            ) : filteredEmployees.length === 0 ? (
+                <CardSkeleton />
+            ) : (
+                <Card>
+                    <CardContent className="p-0">
                         <div className="overflow-x-auto">
                             <Table>
                                 <TableHeader>
@@ -242,7 +220,9 @@ export default function EmployeesPage() {
                                 <TableBody>
                                     {filteredEmployees.map((employee) => (
                                         <TableRow key={employee.id}>
-                                            <TableCell className="font-medium">{employee.id}</TableCell>
+                                            <TableCell className="font-medium">
+                                                {employee.id}
+                                            </TableCell>
                                             <TableCell>{employee.fullName}</TableCell>
                                             <TableCell className="text-muted-foreground">
                                                 {employee.email}
@@ -253,7 +233,7 @@ export default function EmployeesPage() {
                                                     variant="ghost"
                                                     size="icon"
                                                     onClick={() => setDeleteConfirmId(employee.id)}
-                                                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                    className="text-destructive hover:bg-destructive/10"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
@@ -263,9 +243,9 @@ export default function EmployeesPage() {
                                 </TableBody>
                             </Table>
                         </div>
-                    )}
-                </CardContent>
-            </Card>
+                    </CardContent>
+                </Card>
+            )}
 
             {/* Add Employee Modal */}
             <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>

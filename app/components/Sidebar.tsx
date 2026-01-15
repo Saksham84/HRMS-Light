@@ -66,13 +66,11 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
   return (
     <>
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-border z-50 flex items-center px-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background border-b border-border z-50 flex items-center px-4">
         <Button variant="ghost" size="icon" onClick={onToggle}>
           <Menu className="h-5 w-5" />
         </Button>
-        <h1 className="ml-3 text-lg font-semibold text-foreground">
-          {getPageTitle()}
-        </h1>
+        <h1 className="ml-3 text-lg font-semibold">{getPageTitle()}</h1>
       </div>
 
       {/* Overlay */}
@@ -86,30 +84,34 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={clsx(
-          "fixed top-0 left-0 h-full bg-sidebar border-r border-sidebar-border z-50",
+          "fixed top-0 left-0 h-full w-64 flex flex-col",
+          "bg-sidebar border-r border-sidebar-border z-50",
           "transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "-translate-x-full",
-          "lg:translate-x-0 lg:static lg:z-0",
-          "w-64 flex flex-col"
+          "lg:translate-x-0 lg:static lg:z-0"
         )}
       >
-        {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
+        {/* Logo (clickable → dashboard) */}
+        <Link
+          href="/"
+          className="h-16 flex items-center px-6 border-b border-sidebar-border group"
+        >
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 relative">
+            <div className="relative w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform">
               <Image
                 src="/favicon.ico"
                 alt="HRMS Lite Logo"
                 fill
+                sizes="36px"
                 className="object-contain"
                 priority
               />
             </div>
-            <span className="text-lg font-semibold text-sidebar-foreground">
+            <span className="text-lg font-semibold tracking-tight group-hover:text-primary transition-colors">
               HRMS Lite
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-1">
@@ -124,19 +126,27 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 key={item.id}
                 href={item.href}
                 onClick={() => {
-                  if (window.innerWidth < 1024) {
-                    onToggle();
-                  }
+                  if (window.innerWidth < 1024) onToggle();
                 }}
                 className={clsx(
-                  "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg",
-                  "transition-colors duration-200",
+                  "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg",
+                  "transition-all duration-200",
                   isActive
                     ? "bg-sidebar-primary text-sidebar-primary-foreground"
                     : "text-sidebar-foreground hover:bg-sidebar-accent"
                 )}
               >
-                <Icon className="h-5 w-5" />
+                {/* Active indicator */}
+                {isActive && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-primary" />
+                )}
+
+                <Icon
+                  className={clsx(
+                    "h-5 w-5 transition-transform duration-200",
+                    "group-hover:scale-110 group-hover:-translate-x-0.5"
+                  )}
+                />
                 <span className="font-medium">{item.label}</span>
               </Link>
             );
@@ -145,16 +155,12 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
         {/* Footer */}
         <div className="p-4 border-t border-sidebar-border">
-          <div className="flex items-center space-x-3 px-3 py-2">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-              <span className="text-xs font-medium text-muted-foreground">
-                AD
-              </span>
+          <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-accent transition-colors">
+            <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center font-semibold text-sm">
+              AD
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-sidebar-foreground">
-                Admin
-              </p>
+            <div className="min-w-0">
+              <p className="text-sm font-medium truncate">Admin</p>
               <p className="text-xs text-muted-foreground truncate">
                 admin@company.com
               </p>
